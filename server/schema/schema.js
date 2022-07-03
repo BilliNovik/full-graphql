@@ -46,6 +46,13 @@ const Query = new GraphQLObjectType({
             }
         },
 
+        movies: {
+            type: new GraphQLList(MovieType),
+            resolve(parent, args) {
+                return movies.find({});
+            }
+        },
+
         director: {
             type: DirectorType,
             args: {
@@ -56,6 +63,12 @@ const Query = new GraphQLObjectType({
             }
         },
 
+        directors: {
+            type: new GraphQLList(DirectorType),
+            resolve(parent, args) {
+                return directors.find({});
+            }
+        }
     }
 })
 
