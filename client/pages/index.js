@@ -4,7 +4,7 @@ import Movies from './movies'
 export default function Home() {
   return (
     <Container maxW='1200px'>
-      <Movies />
+      <p>404</p>
     </Container>
   )
 }

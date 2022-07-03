@@ -1,12 +1,12 @@
 import { ChakraProvider } from '@chakra-ui/react'
-import { createClient, Provider } from 'urql'
-
-const client = createClient({
-  url: 'http://localhost:5000/graphql',
-  requestPolicy: 'cache-first',
-})
+import { client, ssrCache } from '../graphql/client'
+import { Provider } from 'urql'
 
 function MyApp({ Component, pageProps }) {
+  if (pageProps.urqlState) {
+    ssrCache.restoreData(pageProps.urqlState);
+  }
+
   return (
     <ChakraProvider>
       <Provider value={client}>
