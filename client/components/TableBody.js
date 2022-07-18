@@ -15,20 +15,12 @@ import {
     useDisclosure,
 } from '@chakra-ui/react'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
-import { useMutation } from 'urql'
 
-import { removeMovieMutation } from '../graphql/mutation'
 import EditModal from './EditModal'
 
-const TableBody = (item) => {
+const TableBody = ({ item, onRemoveItem }) => {
     const [modalData, setModalData] = React.useState({})
     const editModal = useDisclosure()
-
-    const [removeMovieResult, removeMovie] = useMutation(removeMovieMutation)
-
-    const onRemoveMovie = (id) => {
-        removeMovie({ "id": id })
-    }
 
     const handleOpenModal = (data) => {
         setModalData(data)
@@ -58,7 +50,7 @@ const TableBody = (item) => {
                                 <PopoverHeader>Delete</PopoverHeader>
                                 <PopoverCloseButton style={{ 'marginTop': '5px' }} />
                                 <PopoverBody>
-                                    <Button onClick={() => onRemoveMovie(item.id)} colorScheme='blue'>Delete</Button>
+                                    <Button onClick={() => onRemoveItem(item.id)} colorScheme='blue'>Delete</Button>
                                 </PopoverBody>
                             </PopoverContent>
                         </Portal>

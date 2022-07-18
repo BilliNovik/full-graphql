@@ -32,3 +32,31 @@ export const changeMovieMutation = `
         }
     }
 `
+
+export const removeDirectorMutation = `
+    mutation ( $id:String ) {
+        deleteDirector( id: $id ) {
+            id
+        }
+    }
+`
+export const addDirectorMutation = `
+    mutation ( $name: String ) {
+        addDirector(
+            name: $name
+        ) {
+            name
+        }
+    }
+`
+export const changeDirectorMutation = `
+    mutation ($name: String,  $id: String) {
+        editDirector(
+            name: $name,
+            id: $id
+        ) {
+            name
+            id
+        }
+    }
+`

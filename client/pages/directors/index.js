@@ -18,6 +18,7 @@ import { allDirectorsQuery } from '../../graphql/query'
 import { removeDirectorMutation } from '../../graphql/mutation'
 import TableBody from '../../components/TableBody'
 import AddModal from '../../components/AddModal'
+import MenuLinks from '../../components/MenuLinks'
 
 export const getServerSideProps = async () => {
     await client.query(allDirectorsQuery).toPromise();
@@ -28,14 +29,13 @@ export const getServerSideProps = async () => {
     };
 }
 
-const Movies = () => {
+const Directors = () => {
     const addModal = useDisclosure()
 
     const [allDirectors] = useQuery({
         query: allDirectorsQuery,
     })
 
-    // TableBody fn
     const [removeDirectorResult, removeDirector] = useMutation(removeDirectorMutation)
     const onRemoveItem = (id) => {
         removeDirector({ "id": id })
@@ -44,6 +44,7 @@ const Movies = () => {
     return (
         <>
             <Container maxW='1200px'>
+                <MenuLinks />
                 <TableContainer>
                     <Table variant='striped' colorScheme='teal'>
                         <TableCaption>
@@ -58,15 +59,15 @@ const Movies = () => {
                         </Thead>
                         <Tbody>
                             {allDirectors.data.directors.map(item => (
-                                <TableBody key={item.id} onRemoveItem={onRemoveItem} item={item} />
+                                <TableBody key={item.id} item={item} onRemoveItem={onRemoveItem} />
                             ))}
                         </Tbody>
                     </Table>
                 </TableContainer>
             </Container>
-            <AddModal addModal={addModal} />
+            <AddModal addModal={addModal} type='d' />
         </>
     )
 }
 
-export default Movies
+export default Directors

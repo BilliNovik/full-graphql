@@ -1,10 +1,10 @@
-import { Container } from '@chakra-ui/react'
-import Movies from './movies'
+import { Container, Menu } from '@chakra-ui/react'
+import MenuLinks from '../components/MenuLinks'
 
 export default function Home() {
   return (
     <Container maxW='1200px'>
-      <p>404</p>
+      <MenuLinks />
     </Container>
   )
 }

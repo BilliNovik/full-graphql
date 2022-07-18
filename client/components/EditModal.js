@@ -15,11 +15,12 @@ import {
 import { useQuery, useMutation } from 'urql'
 
 import { allDirectorsQuery } from '../graphql/query'
-import { changeMovieMutation } from '../graphql/mutation'
+import { changeMovieMutation, changeDirectorMutation } from '../graphql/mutation'
 
 const EditModal = ({ editModal, modalData }) => {
 
     const [changeMovieResult, changeMovie] = useMutation(changeMovieMutation)
+    const [changeDirectorResult, changeDirector] = useMutation(changeDirectorMutation)
 
     const [allDirectors] = useQuery({
         query: allDirectorsQuery,
@@ -43,6 +44,18 @@ const EditModal = ({ editModal, modalData }) => {
         }
     }
 
+    const onChangeDirector = () => {
+        const variables = {
+            "id": modalData.id,
+            "name": addMovieNameRef.current.value,
+        }
+
+        if (!(variables.name === '')) {
+            changeDirector(variables)
+            editModal.onClose()
+        }
+    }
+
     return (
         <Modal blockScrollOnMount={false} isOpen={editModal.isOpen} onClose={editModal.onClose}>
             <ModalOverlay />
@@ -50,15 +63,15 @@ const EditModal = ({ editModal, modalData }) => {
                 <ModalHeader>Change movie</ModalHeader>
                 <ModalCloseButton style={{ 'marginTop': '5px' }} />
                 <ModalBody pb={6}>
-                    <FormControl>
+                    {modalData.name && <FormControl>
                         <FormLabel>Name</FormLabel>
                         <Input ref={addMovieNameRef} defaultValue={modalData.name} placeholder='Name' />
-                    </FormControl>
-                    <FormControl mt={4} >
+                    </FormControl>}
+                    {modalData.genre && <FormControl mt={4} >
                         <FormLabel>Genre</FormLabel>
                         <Input ref={addMovieGenreRef} defaultValue={modalData.genre} placeholder='Genre' />
-                    </FormControl>
-                    <FormControl mt={4}>
+                    </FormControl>}
+                    {modalData.director && <FormControl mt={4}>
                         <FormLabel>Director</FormLabel>
                         <Select variant='filled' ref={addMovieDirectorRef} >
                             <option value={modalData.director?.id}>{modalData.director?.name}</option>
@@ -68,8 +81,9 @@ const EditModal = ({ editModal, modalData }) => {
                                 }
                             })}
                         </Select>
-                    </FormControl>
-                    <Button colorScheme='blue' mt={4} onClick={onChangeMovie}>Change</Button>
+                    </FormControl>}
+                    {modalData.genre ? <Button colorScheme='blue' mt={4} onClick={onChangeMovie}>Change</Button> :
+                        <Button colorScheme='blue' mt={4} onClick={onChangeDirector}>Change</Button>}
                 </ModalBody>
             </ModalContent>
         </Modal>
