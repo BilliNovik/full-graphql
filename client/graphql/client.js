@@ -4,7 +4,7 @@ const isServerSide = typeof window === 'undefined'
 export const ssrCache = ssrExchange({ isClient: !isServerSide })
 
 export const client = createClient({
-    url: 'http://localhost:5000/graphql',
+    url: 'https://graphql-movies-direcors.herokuapp.com/graphql',
     exchanges: [
         dedupExchange,
         cacheExchange,

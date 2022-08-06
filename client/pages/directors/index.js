@@ -19,6 +19,7 @@ import { removeDirectorMutation } from '../../graphql/mutation'
 import TableBody from '../../components/TableBody'
 import AddModal from '../../components/AddModal'
 import MenuLinks from '../../components/MenuLinks'
+import Pagination from '../../components/Pagination'
 
 export const getServerSideProps = async () => {
     await client.query(allDirectorsQuery).toPromise();
@@ -41,6 +42,16 @@ const Directors = () => {
         removeDirector({ "id": id })
     }
 
+    //pagination
+    const [currentPage, setCurrentPage] = React.useState(1)
+    const elementsPerPage = 6
+
+    const lastElemIndex = currentPage * elementsPerPage // 6
+    const firstElemIndex = lastElemIndex - elementsPerPage // 0
+    const currentElems = allDirectors.data.directors.slice(firstElemIndex, lastElemIndex)
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber)
+
     return (
         <>
             <Container maxW='1200px'>
@@ -58,12 +69,14 @@ const Directors = () => {
                             </Tr>
                         </Thead>
                         <Tbody>
-                            {allDirectors.data.directors.map(item => (
+                            {currentElems.map(item => (
                                 <TableBody key={item.id} item={item} onRemoveItem={onRemoveItem} />
                             ))}
                         </Tbody>
                     </Table>
                 </TableContainer>
+                <Pagination elementsPerPage={elementsPerPage} totalElements={allDirectors.data.directors.length} paginate={paginate}
+                    currentPage={currentPage} />
             </Container>
             <AddModal addModal={addModal} type='d' />
         </>

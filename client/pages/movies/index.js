@@ -19,6 +19,7 @@ import { removeMovieMutation } from '../../graphql/mutation'
 import TableBody from '../../components/TableBody'
 import AddModal from '../../components/AddModal'
 import MenuLinks from '../../components/MenuLinks'
+import Pagination from '../../components/Pagination'
 
 export const getServerSideProps = async () => {
     await client.query(allMoviesQuery).toPromise();
@@ -41,6 +42,19 @@ const Movies = () => {
         removeMovie({ "id": id })
     }
 
+    //pagination
+    const [currentPage, setCurrentPage] = React.useState(1)
+    const elementsPerPage = 6
+
+    const lastElemIndex = currentPage * elementsPerPage
+    const firstElemIndex = lastElemIndex - elementsPerPage
+    const currentElems = allMovies.data.movies.slice(firstElemIndex, lastElemIndex)
+
+    const paginate = (pageNumber) => {
+        console.log(pageNumber)
+        setCurrentPage(pageNumber)
+    }
+
     return (
         <>
             <Container maxW='1200px'>
@@ -60,12 +74,14 @@ const Movies = () => {
                             </Tr>
                         </Thead>
                         <Tbody>
-                            {!allMovies.fetching && allMovies.data.movies.map(item => (
+                            {currentElems.map(item => (
                                 <TableBody key={item.id} onRemoveItem={onRemoveItem} item={item} />
                             ))}
                         </Tbody>
                     </Table>
                 </TableContainer>
+                <Pagination elementsPerPage={elementsPerPage} totalElements={allMovies.data.movies.length} paginate={paginate}
+                    currentPage={currentPage} />
             </Container>
             <AddModal addModal={addModal} type='m' />
         </>

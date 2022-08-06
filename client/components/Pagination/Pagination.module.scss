@@ -1,0 +1,19 @@
+.button,
+.li {
+    margin: 0 6px 0
+}
+
+.ul {
+    display: flex;
+    list-style-type: none
+}
+
+.container {
+    display: flex
+}
+
+.active {
+    button {
+        background-color: #63b3ed;
+    }
+}
